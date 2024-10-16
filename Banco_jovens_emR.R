@@ -15,7 +15,7 @@ library(car)
 library(rstudioapi)
 
 # read_sav() lê arquivo SSPS
-banco <- read_sav("banco.sav")
+banco <- read_sav("banco_jovens.sav")
 
 # Função apenas para exibir o menu de interação
 menu <- function() {
