@@ -15,7 +15,7 @@ library(car)
 library(rstudioapi)
 
 # read_sav() lê arquivo SSPS
-banco_jovens <- read_sav("banco.sav")
+banco <- read_sav("banco.sav")
 
 # Função apenas para exibir o menu de interação
 menu <- function() {
@@ -30,6 +30,12 @@ menu <- function() {
   cat("8  - Porcentagem de pesquisas realizadas por cada pesquisador\n")
   cat("9  - Frequência de cada idade\n")
   cat("10 - Porcentagem de cada idade\n")
+  cat("11 - Frequência de gênero\n")
+  cat("12 - Porcentagem de gênero\n")
+  cat("13 - Frequência no interesse político\n")
+  cat("14 - Porcentagem de frequência em interesse político\n")
+  cat("15 - Frequência em conversa política com os pais\n")
+  cat("16 - Porcentagem em conversa política com os pais\n")
 
   cat("0  - Sair\n")
   cat("Sua opção:\n")
@@ -37,8 +43,8 @@ menu <- function() {
 
 menu1 <- function(opcao) {
   if (opcao == 1 || opcao == 2) {
-    banco_jovens$Tipoescola <- as_factor(banco_jovens$Tipoescola)
-    fr_tipo_escola <- table(banco_jovens$Tipoescola)
+    banco$Tipoescola <- as_factor(banco$Tipoescola)
+    fr_tipo_escola <- table(banco$Tipoescola)
     if (opcao == 1) {
       print(fr_tipo_escola)
     } else {
@@ -47,8 +53,8 @@ menu1 <- function(opcao) {
     }
 
   } else if (opcao == 3 || opcao == 4) {
-    banco_jovens$Nomeescola <- as_factor(banco_jovens$Nomeescola)
-    escolas <- table(banco_jovens$Nomeescola)
+    banco$Nomeescola <- as_factor(banco$Nomeescola)
+    escolas <- table(banco$Nomeescola)
 
     if (opcao == 4) {
       print(escolas)
@@ -57,8 +63,8 @@ menu1 <- function(opcao) {
       print(pr_escolas)
     }
   } else if (opcao == 5 || opcao == 6) {
-    banco_jovens$Turno <- as_factor(banco_jovens$Turno)
-    fr_turno <- table(banco_jovens$Turno)
+    banco$Turno <- as_factor(banco$Turno)
+    fr_turno <- table(banco$Turno)
     if (opcao == 6) {
       print(fr_turno)
     } else {
@@ -70,8 +76,8 @@ menu1 <- function(opcao) {
 
 menu2 <- function(opcao) {
   if (opcao == 7 || opcao == 8) {
-    banco_jovens$Pesquisador <- as_factor(banco_jovens$Pesquisador)
-    fr_pesquisador <- table(banco_jovens$Pesquisador)
+    banco$Pesquisador <- as_factor(banco$Pesquisador)
+    fr_pesquisador <- table(banco$Pesquisador)
 
     if (opcao == 7) {
       print(fr_pesquisador)
@@ -83,18 +89,50 @@ menu2 <- function(opcao) {
     }
   } else if (opcao == 9 || opcao == 10) {
     # Converte q1.idade para fator
-    banco_jovens$q1.idade <- as_factor(banco_jovens$q1.idade)
+    banco$q1.idade <- as_factor(banco$q1.idade)
     # Usamos addNA() para incluir valores NA como uma categoria
-    fr_idade <- table(addNA(banco_jovens$q1.idade))
+    fr_idade <- table(addNA(banco$q1.idade))
     if (opcao == 9) {
       print(fr_idade)
     } else if (opcao == 10) {
       pr_idade <- prop.table(fr_idade) * 100
       print(pr_idade)
     }
+  } else if (opcao == 11 || opcao == 12) {
+    banco$q2.sexo <- as_factor(banco$q2.sexo)
+    fr_sexo <- table(addNA(banco$q2.sexo))
+    if (opcao == 11) {
+      print(fr_sexo)
+    } else {
+      pr_sexo <- prop.table(fr_sexo) * 100
+      print(pr_sexo)
+    }
   }
 }
 
+menu3 <- function(opcao) {
+  if (opcao == 13 || opcao == 14) {
+    banco$q3.interessepolitica <- as_factor(banco$q3.interessepolitica)
+    fr_interesse_pol <- table(addNA(banco$q3.interessepolitica))
+
+    if (opcao == 13) {
+      print(fr_interesse_pol)
+    } else {
+      pr_interesse_pol <- prop.table(fr_interesse_pol) * 100
+      print(pr_interesse_pol)
+    }
+  } else if (opcao == 15 || 16) {
+    banco$q4.1conversapoliticaPAIS <- as_factor(banco$q4.1conversapoliticaPAIS)
+    fr_interesse_pol_pais <- table(addNA(banco$q4.1conversapoliticaPAIS))
+
+    if (opcao == 15) {
+      print(fr_interesse_pol_pais)
+    } else {
+      pr_interesse_pol_pais <- prop.table(fr_interesse_pol_pais) * 100
+      print(pr_interesse_pol_pais)
+    }
+  }
+}
 
 # Iniciar variável para entrar no loop do while()
 opcao <- -1
@@ -111,6 +149,7 @@ while (opcao != 0) {
   # Sequências de if/else se comportam de acordo com a escolha do usuário
   menu1(opcao)
   menu2(opcao)
+  menu3(opcao)
 }
 
 cat("===== Encerrando =====")
