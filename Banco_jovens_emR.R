@@ -36,6 +36,18 @@ menu <- function() {
   cat("14 - Porcentagem de frequência em interesse político\n")
   cat("15 - Frequência em conversa política com os pais\n")
   cat("16 - Porcentagem em conversa política com os pais\n")
+  cat("17 - Frequência em conversa política com familiares\n")
+  cat("18 - Porcentagem em conversa política com familiares\n")
+  cat("19 - Frequência em conversa política com amigos\n")
+  cat("20 - Porcentagem em conversa política com amigos\n")
+  cat("21 - Frequência em conversa política nas redes sociais\n")
+  cat("22 - Porcentagem em conversa política nas redes sociais\n")
+  cat("23 - Frequência em conversa política com colegas\n")
+  cat("24 - Porcentagem em conversa política com colegas\n")
+  cat("25 - Frequência em conversa política com professores\n")
+  cat("26 - Porcentagem em conversa política com professores\n")
+  cat("27 - Frequência em formar opinião 1LUGAR\n")
+  cat("28 - Porcentagem em formar opinião 1LUGAR\n")
 
   cat("0  - Sair\n")
   cat("Sua opção:\n")
@@ -71,6 +83,7 @@ menu1 <- function(opcao) {
       pr_turno <- prop.table(fr_turno) * 100
       print(pr_turno)
     }
+
   }
 }
 
@@ -121,7 +134,7 @@ menu3 <- function(opcao) {
       pr_interesse_pol <- prop.table(fr_interesse_pol) * 100
       print(pr_interesse_pol)
     }
-  } else if (opcao == 15 || 16) {
+  } else if (opcao == 15 || opcao == 16) {
     banco$q4.1conversapoliticaPAIS <- as_factor(banco$q4.1conversapoliticaPAIS)
     fr_interesse_pol_pais <- table(addNA(banco$q4.1conversapoliticaPAIS))
 
@@ -131,7 +144,73 @@ menu3 <- function(opcao) {
       pr_interesse_pol_pais <- prop.table(fr_interesse_pol_pais) * 100
       print(pr_interesse_pol_pais)
     }
+  } else if (opcao == 17 || opcao  == 18) {
+    banco$q4.2conversapoliticaFAMILIARES <- as_factor(banco$q4.2conversapoliticaFAMILIARES)
+    fr_interesse_pol_fam <- table(addNA(banco$q4.2conversapoliticaFAMILIARES))
+
+    if (opcao == 17) {
+      print(fr_interesse_pol_fam)
+    } else {
+      pr_interesse_pol_fam <- prop.table(fr_interesse_pol_fam) * 100
+      print(pr_interesse_pol_fam)
+    }
+  } else if (opcao == 19 || opcao == 20){
+    banco$q4.3conversapoliticaAMIGOS <- as_factor(banco$q4.3conversapoliticaAMIGOS)
+    fr_interesse_pol_amigos <- table(addNA(banco$q4.3conversapoliticaAMIGOS))
+
+    if (opcao ==  19){
+      print(fr_interesse_pol_amigos)
+    } else {
+      pr_interesse_pol_amigos <- prop.table(fr_interesse_pol_amigos) * 100
+      print(pr_interesse_pol_amigos)
+    }
+
+  } else if (opcao == 21 ||  opcao == 22) {
+    banco$q4.4conversapoliticaREDESSOCIAIS <- as_factor(banco$q4.4conversapoliticaREDESSOCIAIS)
+    fr_interesse_pol_redesSoc <- table(addNA(banco$q4.4conversapoliticaREDESSOCIAIS))
+
+    if (opcao == 21) {
+      print(fr_interesse_pol_redesSoc)
+    } else {
+      pr_interesse_pol_redesSoc <- prop.table(fr_interesse_pol_redesSoc) * 100
+      print(pr_interesse_pol_redesSoc)
+    }
+  } else if (opcao == 23 || opcao == 24) {
+    banco$q4.5conversapoliticaCOLEGASESCOLA <- as_factor(banco$q4.5conversapoliticaCOLEGASESCOLA)
+    fr_interesse_pol_colegasEscola <- table(addNA(banco$q4.5conversapoliticaCOLEGASESCOLA))
+
+    if (opcao == 23) {
+      print(fr_interesse_pol_colegasEscola)
+    } else {
+      pr_interesse_pol_colegasEscola <- prop.table(fr_interesse_pol_colegasEscola) * 100
+      print(pr_interesse_pol_colegasEscola)    
+    }
+  } else if (opcao == 25 || opcao == 26) {
+    banco$q4.6conversapoliticaPROFESSORES <- as_factor(banco$q4.6conversapoliticaPROFESSORES)
+    fr_interesse_pol_prof <- table(addNA(banco$q4.6conversapoliticaPROFESSORES))
+
+    if (opcao == 25) {
+      print(fr_interesse_pol_prof)
+    } else {
+      pr_interesse_pol_prof <- prop.table(fr_interesse_pol_prof) * 100
+      print(pr_interesse_pol_prof)
+    }
   }
+}
+
+menu4 <- function(opcao) {
+ if (opcao == 27 || opcao == 28) {
+      banco$q5.1formaropiniao1LUGAR <- as_factor(banco$q5.1formaropiniao1LUGAR)
+      fr_forma_opiniao_1lugar <- table(addNA(banco$q5.1formaropiniao1LUGAR))
+
+    if (opcao == 27) {
+      print(fr_forma_opiniao_1lugar)
+    } else {
+      pr_forma_opinicao_1lugar <- prop.table(addNA(banco$q5.1formaropiniao1LUGAR)) * 100
+      print(pr_forma_opinicao_1lugar)
+    }
+  }
+
 }
 
 # Iniciar variável para entrar no loop do while()
@@ -143,13 +222,20 @@ while (opcao != 0) {
   # Exibe menu
   menu()
 
-  # Lê a entrada do usuário
-  opcao <- as.integer(readline(prompt = ""))
+  # Lê a entrada do usuário e tenta converter para inteiro
+  entrada <- readline(prompt = "")
+  opcao <- suppressWarnings(as.integer(entrada))
 
-  # Sequências de if/else se comportam de acordo com a escolha do usuário
-  menu1(opcao)
-  menu2(opcao)
-  menu3(opcao)
+  # Verifica se a conversão foi bem-sucedida
+  if (is.na(opcao)) {
+    cat("Opção inválida, tente novamente.\n")
+  } else {
+    # Sequências de if/else se comportam de acordo com a escolha do usuário
+    menu1(opcao)
+    menu2(opcao)
+    menu3(opcao)
+    menu4(opcao)
+
+  }
 }
-
 cat("===== Encerrando =====")
