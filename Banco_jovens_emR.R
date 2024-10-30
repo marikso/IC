@@ -199,19 +199,19 @@ menu3 <- function(opcao) {
 }
 
 menu4 <- function(opcao) {
- if (opcao == 27 || opcao == 28) {
-      banco$q5.1formaropiniao1LUGAR <- as_factor(banco$q5.1formaropiniao1LUGAR)
-      fr_forma_opiniao_1lugar <- table(addNA(banco$q5.1formaropiniao1LUGAR))
-
+  if (opcao == 27 || opcao == 28) {
+    banco$q5.1formaropiniao1LUGAR <- as_factor(banco$q5.1formaropiniao1LUGAR)
+    fr_forma_opiniao_1lugar <- table(addNA(banco$q5.1formaropiniao1LUGAR))
+    
     if (opcao == 27) {
       print(fr_forma_opiniao_1lugar)
     } else {
-      pr_forma_opinicao_1lugar <- prop.table(addNA(banco$q5.1formaropiniao1LUGAR)) * 100
-      print(pr_forma_opinicao_1lugar)
+      pr_forma_opiniao_1lugar <- prop.table(fr_forma_opiniao_1lugar) * 100
+      print(pr_forma_opiniao_1lugar)
     }
   }
-
 }
+
 
 # Iniciar variável para entrar no loop do while()
 opcao <- -1
